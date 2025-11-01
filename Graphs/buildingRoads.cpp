@@ -1,14 +1,13 @@
 #include<bits/stdc++.h>
 using namespace std;
-void dfs(int node,int n,int m,vector<int>adj[],vector<int>&vis)
+void dfs(int node,vector<int>&vis,vector<int>adj[])
 {
   vis[node]=1;
-  //traverse the neighbors
   for(auto it:adj[node])
   {
     if(!vis[it])
     {
-      dfs(it,n,m,adj,vis);
+      dfs(it,vis,adj);
     }
   }
 }
@@ -16,6 +15,7 @@ int main()
 {
   int n,m;
   cin>>n>>m;
+  //create an adjacency list 
   vector<int>adj[n+1];
   for(int i=0;i<m;i++)
   {
@@ -23,21 +23,31 @@ int main()
     cin>>u>>v;
     adj[u].push_back(v);
     adj[v].push_back(u);
+
   }
-  //find the no of connected componenets
+  //now count the connected components
   vector<int>vis(n+1,0);
-   vector<int> representatives;
-  int c=0;
+  int cnt=0;
+  vector<int>path;
   for(int i=1;i<=n;i++)
   {
      if(!vis[i])
-     {  representatives.push_back(i);
-      dfs(i,n,m,adj,vis);
-      c++;
+     { path.push_back(i);
+       dfs(i,vis,adj);
+       cnt++;
      }
   }
-  cout<<c-1<<endl;
-  for (int i = 1; i < representatives.size(); i++) {
-        cout << representatives[i - 1] << " " << representatives[i] << endl;
+  if(cnt==1)
+  {
+    cout<<0<<endl;
+  }
+  else
+  {
+    cout<<cnt-1<<endl;
+    for(int i=1;i<path.size();i++)
+    {
+      cout<<path[i-1]<<" "<<path[i]<<endl;
     }
+  }
+    return 0;
 }

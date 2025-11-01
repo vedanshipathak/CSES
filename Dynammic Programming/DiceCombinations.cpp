@@ -1,33 +1,26 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
-class Dp{
-    public:
-    int MOD=1e9+7;
-    private:
-   int solve(int target,vector<int>&dp) {
-    if (target == 0) return 1;
-    if (target < 0) return 0;
-   
-    int ways = 0;
-    for (int i = 1; i <= 6; i++) {
-        if(dp[i]!=-1)return dp[i];
-       dp[i] += solve(target - i,dp);
-    }
-    return dp[6];
-}
-
-    public:
-    int findCombination(int target)
-    {
-        vector<int>dp(7,-1);
-        return solve(target,dp);
-    }
-};
-int main()
+int MOD=1e9+7;
+int solve(int sum,vector<int>&dp)
 {
- 
-    Dp obj;
-    int target;
-    cin>>target;
-    cout<<obj.findCombination(target)<<endl;
+    //base 
+    if(sum==0)return 1;
+    
+    if(sum<0)return 0;
+    if(dp[sum]!=-1)return dp[sum];
+    int c=0;
+    for(int i=1;i<=6;i++)
+    {
+        c=(c+solve(sum-i,dp))%MOD;//here (c+solve()) should be written than c+=solve() because c can exceed the limit of int}
+    }
+    return dp[sum]=c;
+}
+int main() {
+	// your code goes here
+
+   int sum;
+   cin>>sum;
+   vector<int>dp(sum+1,-1);
+
+   cout<<solve(sum,dp);
 }
